@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 80
+ignore =
+    # indentation is not a multiple of four,
+    E111,E114,W504,E265
