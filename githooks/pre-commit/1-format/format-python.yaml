@@ -1,3 +1,3 @@
 cmd: githooks/pre-commit/1-format/.format-python.sh
 image:
-  reference: githooks-python:1.0.0
+  reference: githooks-python:1.1.0

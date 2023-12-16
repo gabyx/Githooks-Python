@@ -1,6 +1,6 @@
 version: 1
 images:
-  githooks-python:1.0.0:
+  githooks-python:1.1.0:
     build:
       dockerfile: ./githooks/container/Dockerfile
       context: .

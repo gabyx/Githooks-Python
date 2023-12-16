@@ -1,0 +1,3 @@
+cmd: githooks/scripts/format-python-all.sh
+image:
+  reference: githooks-python:1.1.0

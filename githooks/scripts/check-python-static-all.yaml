@@ -1,0 +1,3 @@
+cmd: githooks/scripts/check-python-static-all.sh
+image:
+  reference: githooks-python:1.1.0
