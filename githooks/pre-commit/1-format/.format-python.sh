@@ -32,14 +32,12 @@ parallelForFiles "$func" \
     "false" \
     "$tool" || die "Python format failed."
 
-tool="isort"
-func="formatIncludesPythonFile"
 assertISortVersion "5.12.0" "6.0.0" "isort"
-parallelForFiles "$func" \
+parallelForFiles "formatIncludesPythonFileISort" \
     "$STAGED_FILES" \
     "$regex" \
     "false" \
-    "$tool" || die "Python format includes failed."
+    "isort" || die "Python format includes failed."
 
 stageFiles "$PARALLEL_EXECUTED_FILES" ||
     printError "Could not stage formatted files."

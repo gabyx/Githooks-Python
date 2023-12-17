@@ -13,12 +13,14 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 dryRun="true"
 dir=""
+excludeRegex=""
+regex=$(getGeneralPythonFileFormatRegex)
 
 function help() {
     printError "Usage:" \
         "  [--force]                      : Force the format." \
         "  [--exclude-regex <regex> ]     : Exclude file with this regex." \
-        "  [--glob-pattern <pattern>]     : Regex pattern to include files." \
+        "  [--regex-pattern <pattern>]     : Regex pattern to include files." \
         "   --dir <path>                  : In which directory to format files."
 }
 
@@ -35,6 +37,14 @@ function parseArgs() {
             true
         elif [ "$prev" = "--dir" ]; then
             dir="$p"
+        elif [ "$p" = "--exclude" ]; then
+            true
+        elif [ "$prev" = "--exclude" ]; then
+            excludeRegex="$p"
+        elif [ "$p" = "--include" ]; then
+            true
+        elif [ "$prev" = "--include" ]; then
+            regex="$p"
         else
             printError "! Unknown argument \`$p\`"
             help
@@ -54,27 +64,26 @@ else
 fi
 
 if [ "${GITHOOKS_PYTHON_FORMAT_USE_YAPF:-}" = "1" ]; then
+    tool="yapf"
+    func="formatPythonFileYapf"
     assertYapfVersion "0.31.0" "1.0.0" "yapf"
-
-    if [ "$dryRun" = "true" ]; then
-        yapf -d "$dir" || die "Formatting in '$dir' with 'yapf' failed."
-    else
-        yapf -i "$dir" || die "Formatting in '$dir' with 'yapf' failed."
-    fi
-
 else
+    tool="black"
+    func="formatPythonFileBlack"
     assertBlackVersion "22.1.0" "24.0.0" "black"
-    if [ "$dryRun" = "true" ]; then
-        black --diff "$dir" || die "Formatting in '$dir' with 'black' failed."
-    else
-        black "$dir" || die "Formatting in '$dir' 'black' failed."
-    fi
-
 fi
+
+parallelForDir "$func" \
+    "$dir" \
+    "$regex" \
+    "$excludeRegex" \
+    "$dryRun" \
+    "$tool" || die "Python format failed."
 
 assertISortVersion "5.12.0" "6.0.0" "isort"
-if [ "$dryRun" = "true" ]; then
-    isort --check "$dir" || die "Formatting in '$dir' with 'isort' failed."
-else
-    isort "$dir" || die "Formatting in '$dir' with 'isort' failed."
-fi
+parallelForDir "formatIncludesPythonFileISort" \
+    "$dir" \
+    "$regex" \
+    "$excludeRegex" \
+    "$dryRun" \
+    "isort" || die "Python format includes failed."
