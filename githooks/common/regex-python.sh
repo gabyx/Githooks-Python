@@ -4,9 +4,9 @@
 # Get the general python file regex.
 function getGeneralPythonFileFormatRegex() {
     # shellcheck disable=2028
-    echo '(\.py|\bTiltfile)$'
+    echo '.*/(\.py|\bTiltfile)$'
 }
 
 function getGeneralPythonFileRegex() {
-    echo '\.py$'
+    echo '.*\.py$'
 }
