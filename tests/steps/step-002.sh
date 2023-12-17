@@ -20,6 +20,7 @@ flake8 --version || die "Flake8 not available."
 
 function setupFiles() {
     echo "a = [1 ,   2 , 3]" >"A1.py"
+    echo "a = [1 ,   2 , 3]" >"Tiltfile"
 }
 
 setupFiles ||
@@ -31,6 +32,7 @@ out=$(git commit -a -m "Checking files." 2>&1)
 # shellcheck disable=SC2181
 if [ $? -eq 0 ] ||
     ! echo "$out" | grep -qi "checking.*A1\.py" ||
+    echo "$out" | grep -qi "checking.*Tiltfile" ||
     ! echo "$out" | grep -qi "E203"; then
     echo "Expected to have checked all files. $out"
     exit 1

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090,SC1091
 
-
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 ROOT_DIR="$DIR/../../.."
 . "$ROOT_DIR/githooks/common/export-staged.sh"
@@ -26,7 +25,7 @@ else
     assertBlackVersion "22.1.0" "24.0.0" "black"
 fi
 
-regex=$(getGeneralPythonFileRegex) || die "Could not get python file regex."
+regex=$(getGeneralPythonFileFormatRegex) || die "Could not get python file regex."
 parallelForFiles "$func" \
     "$STAGED_FILES" \
     "$regex" \

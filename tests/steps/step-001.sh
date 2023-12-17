@@ -21,6 +21,7 @@ black --version || die "Black not available."
 
 function setupFiles() {
     echo "a = [1 ,   2 , 3]" >"A1.py"
+    echo "a = [1 ,   2 , 3]" >"Tiltfile"
 }
 
 setupFiles ||
@@ -31,7 +32,8 @@ git add . || die "Could not add files."
 out=$(git commit -a -m "Formatting files." 2>&1)
 # shellcheck disable=SC2181
 if [ $? -ne 0 ] ||
-    ! echo "$out" | grep -qi "formatting.*A1\.py"; then
+    ! echo "$out" | grep -qi "formatting.*A1\.py" ||
+    ! echo "$out" | grep -qi "formatting.*Tiltfile"; then
     echo "Expected to have formatted all files. $out"
     exit 1
 fi
