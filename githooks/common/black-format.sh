@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090,SC1091,SC2015
 
-
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 . "$DIR/log.sh"
 . "$DIR/version.sh"
@@ -37,7 +36,7 @@ function formatPythonFileBlack() {
     local file="$2"
 
     printInfo " - ✍ Formatting file: '$file'"
-    "$blackExe" "$file" 1>&2 ||
+    "$blackExe" --include "" "$file" 1>&2 ||
         {
             printError "'$blackExe' failed for: '$file'"
             return 1

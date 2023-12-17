@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090,SC1091,SC2015
 # Test:
-#   Run python-format hook on staged files
+#   Run python-check hook on staged files
 
 set -u
 
